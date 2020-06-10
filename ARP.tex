@@ -1,0 +1,41 @@
+\documentclass[12pt,border=12pt,png]{standalone}
+\usepackage{bytefield}
+\usepackage{fontspec}
+\usepackage[dvipsnames]{xcolor}
+\colorlet{lightgray}{Black!5!}
+\colorlet{gray}{Black!50!}
+
+% Control Codes - http://www.tcpipguide.com/free/t_PPPLinkControlProtocolLCPFrameFormats.htm
+% Other field descritpions - http://www.tcpipguide.com/free/t_PPPGeneralControlProtocolFrameFormatandOptionForma.htm
+\newcommand{\colorwordbox}[4][]{%
+\rlap{\wordbox[#1]{#3}{\color{#2}\rule{\width}{\height}}}%
+\wordbox[#1]{#3}{#4}}
+
+\begin{document}
+    \begin{bytefield}[bitwidth=1.1em, bitheight=2em, boxformatting={\centering\footnotesize},rightcurly=., rightcurlyspace=0pt]{32}
+        \bitheader{0-31} \\
+        \begin{rightwordgroup}{32}
+            \bitboxes*{1}{01111110}
+            \bitbox{8}{Address}
+            \bitbox{8}{Control}
+            \bitbox{8}{Protocol \\ \tiny (first byte)}
+        \end{rightwordgroup} \\
+        \begin{rightwordgroup}{64}
+            \bitbox{8}{Protocol \\ \tiny (second byte)}
+            \bitbox{8}{Code}
+            \bitbox{8}{Identifier}
+            \bitbox{8}{Length \\ \tiny (first byte)}
+        \end{rightwordgroup} \\
+        \begin{rightwordgroup}{96}
+            \bitbox{8}{Length \\ \tiny (second byte)}
+            \bitbox[tlr]{24}{\color{lightgray}\rule{\width}{\height}}
+        \end{rightwordgroup} \\
+        \colorwordbox[lr]{lightgray}{2}{Data \\ \tiny (variable)} \\
+        \bitbox[lbr]{24}{\color{lightgray}\rule{\width}{\height}}
+        \bitbox[tblr]{8}{Padding \\ \tiny (as needed)} \\
+        \bitbox[tblr]{8}{$\cdots$}
+        \bitbox{16}{Frame Check Sequence \\ \tiny (may also be 4 bytes)} 
+        \bitboxes*{1}{01111110} 
+    \end{bytefield}
+
+\end{document}
