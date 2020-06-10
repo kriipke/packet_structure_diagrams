@@ -1,0 +1,66 @@
+\documentclass[12pt,border=12pt,png]{standalone}
+\usepackage{bytefield}
+\usepackage[dvipsnames]{xcolor}
+\colorlet{color_payload}{Black!5!}
+\colorlet{color_sender}{RubineRed!10!}
+\colorlet{color_target}{Cyan!10!}
+\usepackage{xparse}
+
+% FIELD DESCRIPTIONS:
+%   http://www.tcpipguide.com/free/t_ARPMessageFormat.htm
+
+% MAKE CAPTION - The ARP message format is designed to accommodate layer two and layer three addresses of various sizes. This diagram shows the most common implementation, which uses 32 bits for the layer three (“Protocol”) addresses, and 48 bits for the layer two hardware addresses. These numbers of course correspond to the address sizes of the Internet Protocol version 4 and IEEE 802 MAC addresses, used by Ethernet.
+
+\DeclareDocumentCommand \colorbitbox {ommm} {%
+    \IfNoValueTF{#1}{%
+        \rlap{\bitbox{#3}{\color{#2}\rule{\width}{\height}}}%
+        \bitbox{#3}{#4}
+    }{%
+        \rlap{\bitbox[#1]{#3}{\color{#2}\rule{\width}{\height}}}%
+        \bitbox[#1]{#3}{#4}
+    }%
+}
+\DeclareDocumentCommand \colorwordbox {ommm} {%
+    \IfNoValueTF{#1}{%
+        \rlap{\wordbox{#3}{\color{#2}\rule{\width}{\height}}}%
+        \wordbox{#3}{#4}
+    }{%
+        \rlap{\wordbox[#1]{#3}{\color{#2}\rule{\width}{\height}}}%
+        \wordbox[#1]{#3}{#4}
+    }%
+}
+
+\begin{document}
+    \begin{bytefield}[bitwidth=1.1em, bitheight=2em, boxformatting={\centering\footnotesize},rightcurly=., rightcurlyspace=0pt]{32}
+        \bitheader{0-31} \\
+        \begin{leftwordgroup}{header}
+        \begin{rightwordgroup}{32}
+            \bitbox{16}{Hardware Type}
+            \bitbox{16}{Protocol Type}
+        \end{rightwordgroup} \\
+        \begin{rightwordgroup}{64}
+            \bitbox{8}{Hardware Address Length}
+            \bitbox{8}{Protocol Address Length}
+            \bitbox{16}{Opcode}
+        \end{rightwordgroup}
+        \end{leftwordgroup} \\
+        \begin{rightwordgroup}{96}
+            \colorwordbox[tlr]{color_sender}{1}{Sender Hardware Address}
+        \end{rightwordgroup} \\
+        \begin{rightwordgroup}{128}
+            \colorbitbox[blr]{color_sender}{16}{}
+            \colorbitbox{color_sender}{16}{Sender Protocol Address \\ \tiny (bytes 1-2)}
+        \end{rightwordgroup} \\
+        \begin{rightwordgroup}{160}
+            \colorbitbox{color_sender}{16}{Sender Protocol Address \\ \tiny (bytes 3-4)}
+            \colorbitbox[tlr]{color_target}{16}{}
+        \end{rightwordgroup} \\
+        \begin{rightwordgroup}{192}
+            \colorwordbox[lr]{color_target}{1}{Target Protocol Address}
+        \end{rightwordgroup} \\
+        \begin{rightwordgroup}{224}
+            \colorwordbox[tblr]{color_target}{1}{Target Hardware Address}
+        \end{rightwordgroup} 
+    \end{bytefield}
+
+\end{document}
