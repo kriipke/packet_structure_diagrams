@@ -1,0 +1,21 @@
+\usepackage{bytefield}
+\usepackage{xparse}
+
+\DeclareDocumentCommand \colorbitbox {ommm} {%
+    \IfNoValueTF{#1}{%
+        \rlap{\bitbox{#3}{\color{#2}\rule{\width}{\height}}}%
+        \bitbox{#3}{#4}
+    }{%
+        \rlap{\bitbox[#1]{#3}{\color{#2}\rule{\width}{\height}}}%
+        \bitbox[#1]{#3}{#4}
+    }%
+}
+\DeclareDocumentCommand \colorwordbox {ommm} {%
+    \IfNoValueTF{#1}{%
+        \rlap{\wordbox{#3}{\color{#2}\rule{\width}{\height}}}%
+        \wordbox{#3}{#4}
+    }{%
+        \rlap{\wordbox[#1]{#3}{\color{#2}\rule{\width}{\height}}}%
+        \wordbox[#1]{#3}{#4}
+    }%
+}
