@@ -1,0 +1,10 @@
+HRD value, hardware type
+1,Ethernet (10 Mb)
+6,IEEE 802 Networks
+7,ARCNET
+15,Frame Relay
+16,Asynchronous Transfer Mode (ATM)
+17,HDLC
+18,Fibre Channel
+19,Asynchronous Transfer Mode (ATM)
+20,Series Line
