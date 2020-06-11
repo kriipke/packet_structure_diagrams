@@ -1,0 +1,10 @@
+Opcode, ARP Message Type
+1,ARP Request
+2,ARP Reply
+3,RARP Request
+4,RARP Reply
+5,DRARP Request
+6,DRARP Reply
+7,DRARP Error
+8,InARP Request
+9,InARP Reply
